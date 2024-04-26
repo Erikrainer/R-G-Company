@@ -1,0 +1,18 @@
+{
+  "name": "randgcompany",
+  "version": "1.0.0",
+  "description": "![Github License](https://img.shields.io/badge/License-MIT-yellow.svg)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "inquirer": "^8.2.4",
+    "pg": "^8.11.5"
+  }
+}
