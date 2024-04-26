@@ -1,5 +1,7 @@
 const express = require('express');
 
+require('dotenv').config();
+
 const { Pool } = require('pg');
 
 const PORT = process.env.PORT || 3001;
@@ -7,7 +9,8 @@ const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+ 
+console.log(process.env.PASSWORD);
 const pool = new Pool(
     {
     user: process.env.USER,
@@ -20,6 +23,27 @@ const pool = new Pool(
 
   pool.connect();
 
+  pool.query('SELECT * FROM department', (err, result) => {
+    if (err) {
+      console.error('Error executing query', err);
+  } else {
+      console.log(result.rows);
+  }
+  });
+  pool.query('SELECT * FROM role', (err, result) => {
+    if (err) {
+      console.error('Error executing query', err);
+  } else {
+      console.log(result.rows);
+  };
+  });
+  pool.query('SELECT * FROM employee', (err, result) => {
+    if (err) {
+      console.error('Error executing query', err);
+  } else {
+      console.log(result.rows);
+  }
+  });
 
   app.use((req, res) => {
     res.status(404).end();
