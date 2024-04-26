@@ -19,3 +19,12 @@ const pool = new Pool(
   )
 
   pool.connect();
+
+
+  app.use((req, res) => {
+    res.status(404).end();
+  });
+  
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
