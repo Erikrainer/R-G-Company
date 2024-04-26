@@ -4,27 +4,30 @@ CREATE DATABASE randg_db;
 
 
 CREATE TABLE department (
-id SERIAL PRIMARY KEY,
-name VARCHAR(30)
+department_id SERIAL PRIMARY KEY NOT NULL,
+name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
-id SERIAL PRIMARY KEY,
+role_id SERIAL PRIMARY KEY NOT NULL,
 title VARCHAR(30) NOT NULL,
 salary DECIMAL NOT NULL,
-departments_id INTEGER,
-  FOREIGN KEY (departments_id)
-  REFERENCES department(id)
+department_id INTEGER,
+  FOREIGN KEY (department_id)
+  REFERENCES department(department_id)
   ON DELETE SET NULL
 );
 
 CREATE TABLE employee (
-id SERIAL PRIMARY KEY,
+employee_id SERIAL PRIMARY KEY NOT NULL,
 first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL,
-roles_id INTEGER,
-manager_id INTEGER REFERENCES manager(id), -- have to reference another employee that is the manager of the current employee, null if has no manager
-  FOREIGN KEY (roles_id)
-  REFERENCES role(id)
+role_id INTEGER NOT NULL,
+  FOREIGN KEY (role_id)
+  REFERENCES role(role_id)
+  ON DELETE SET NULL
+manager_id INTEGER, -- have to reference another employee that is the manager of the current employee, null if has no manager
+  FOREIGN KEY (manager_id)
+  REFERENCES department(department_id)
   ON DELETE SET NULL
 );
