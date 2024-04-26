@@ -1,5 +1,7 @@
 const express = require('express');
 
+const promptUser = require("./logics/promptuser");
+
 require('dotenv').config();
 
 const { Pool } = require('pg');
@@ -10,7 +12,6 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
  
-console.log(process.env.PASSWORD);
 const pool = new Pool(
     {
     user: process.env.USER,
