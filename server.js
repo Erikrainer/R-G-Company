@@ -10,12 +10,12 @@ app.use(express.json());
 
 const pool = new Pool(
     {
-      user: 'postgres',    
-      password: '135798',
-      host: 'localhost',
-      database: 'radng_db'
+    user: process.env.USER,
+    password: process.env.PASSWORD,    
+    host: process.env.HOST,
+    database: process.env.DATABASE,  
     },
-    console.log(`Connected to the radng_db database.`)
+    console.log(`Connected to the randg_db database.`)
   )
 
   pool.connect();
