@@ -24,6 +24,13 @@ const pool = new Pool(
 
   pool.connect();
 
+  // async init() {
+  //   const userInitInput = await promptUser();
+  //   // bellow user choices
+  //   // "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"
+  //   await "OPEN THE FUNCTION";
+  // };
+
   pool.query('SELECT * FROM department', (err, result) => {
     if (err) {
       console.error('Error executing query', err);
