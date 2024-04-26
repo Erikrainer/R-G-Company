@@ -10,9 +10,7 @@ app.use(express.json());
 
 const pool = new Pool(
     {
-      // TODO: Enter PostgreSQL username
-      user: 'postgres',
-      // TODO: Enter PostgreSQL password
+      user: 'postgres',    
       password: '135798',
       host: 'localhost',
       database: 'radng_db'
