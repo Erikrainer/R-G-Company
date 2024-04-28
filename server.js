@@ -45,6 +45,7 @@ const pool = new Pool(
       } else {
           const employeeTable = objectsToTable(result.rows);
           console.log(employeeTable);
+          init();
       };
       });
 
@@ -62,6 +63,7 @@ const pool = new Pool(
             console.log(result.rows)
             const roleTable = objectsToTable(result.rows);
             console.log(roleTable);
+            init();
         };
       });
 
@@ -75,6 +77,7 @@ const pool = new Pool(
         } else {
            const departmentTable = objectsToTable(result.rows);
             console.log(departmentTable);
+            init();
         };
       });
 
@@ -88,8 +91,6 @@ const pool = new Pool(
       console.log("Thanks for using the RandGCompany system!!!");
       process.exit();
     }
-
-    init();
   };
 
   init();
@@ -98,6 +99,4 @@ const pool = new Pool(
     res.status(404).end();
   });
   
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  app.listen(PORT, () => {});
