@@ -8,6 +8,8 @@ const departmentInput = require("./logics/department");
 
 const employeeInput = require("./logics/employee");
 
+const objectsToTable = require("./logics/table");
+
 require('dotenv').config();
 
 const { Pool } = require('pg');
@@ -31,52 +33,64 @@ const pool = new Pool(
   pool.connect();
 
   async function init() {
+
     const userInitInput = await promptUser();
-    console.log(userInitInput)
+
     // bellow user choices
     // "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"
     if(userInitInput.landing === 'View All Employees'){
-      console.log("View All Employees");
+      pool.query('SELECT * FROM employee', (err, result) => {
+        if (err) {
+          console.error('Error executing query', err);
+      } else {
+          const employeeTable = objectsToTable(result.rows);
+          console.log(employeeTable);
+      };
+      });
+
     }else if(userInitInput.landing === "Add Employee"){
       console.log("Add Employee");
+
     }else if(userInitInput.landing === "Update Employee Role"){
       console.log("Update Employee Role");
+
     }else if(userInitInput.landing === "View All Roles"){
-      console.log("View All Roles");
+      pool.query('SELECT * FROM role', (err, result) => {
+        if (err) {
+          console.error('Error executing query', err);
+        } else {
+            console.log(result.rows)
+            const roleTable = objectsToTable(result.rows);
+            console.log(roleTable);
+        };
+      });
+
     }else if(userInitInput.landing === "Add Role"){
       console.log("Add Role");
+
     }else if(userInitInput.landing === "View All Departments"){
-      console.log("View All Departments");
+      pool.query('SELECT * FROM department', (err, result) => {
+        if (err) {
+          console.error('Error executing query', err);
+        } else {
+           const departmentTable = objectsToTable(result.rows);
+            console.log(departmentTable);
+        };
+      });
+
     }else if(userInitInput.landing === "Add Department"){
       console.log("Add Department");
+
     }else if(userInitInput.landing === "View All Employees"){
       console.log("View All Employees");
-    }else{
-      console.log("Quit");
-    }
-  };
 
-  pool.query('SELECT * FROM department', (err, result) => {
-    if (err) {
-      console.error('Error executing query', err);
-  } else {
-      console.log(result.rows);
-  }
-  });
-  pool.query('SELECT * FROM role', (err, result) => {
-    if (err) {
-      console.error('Error executing query', err);
-  } else {
-      console.log(result.rows);
+    }else{
+      console.log("Thanks for using the RandGCompany system!!!");
+      process.exit();
+    }
+
+    init();
   };
-  });
-  pool.query('SELECT * FROM employee', (err, result) => {
-    if (err) {
-      console.error('Error executing query', err);
-  } else {
-      console.log(result.rows);
-  }
-  });
 
   init();
 
