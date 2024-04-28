@@ -30,12 +30,31 @@ const pool = new Pool(
 
   pool.connect();
 
-  // async init() {
-  //   const userInitInput = await promptUser();
-  //   // bellow user choices
-  //   // "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"
-  //   await "OPEN THE FUNCTION";
-  // };
+  async function init() {
+    const userInitInput = await promptUser();
+    console.log(userInitInput)
+    // bellow user choices
+    // "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"
+    if(userInitInput.landing === 'View All Employees'){
+      console.log("View All Employees");
+    }else if(userInitInput.landing === "Add Employee"){
+      console.log("Add Employee");
+    }else if(userInitInput.landing === "Update Employee Role"){
+      console.log("Update Employee Role");
+    }else if(userInitInput.landing === "View All Roles"){
+      console.log("View All Roles");
+    }else if(userInitInput.landing === "Add Role"){
+      console.log("Add Role");
+    }else if(userInitInput.landing === "View All Departments"){
+      console.log("View All Departments");
+    }else if(userInitInput.landing === "Add Department"){
+      console.log("Add Department");
+    }else if(userInitInput.landing === "View All Employees"){
+      console.log("View All Employees");
+    }else{
+      console.log("Quit");
+    }
+  };
 
   pool.query('SELECT * FROM department', (err, result) => {
     if (err) {
@@ -58,6 +77,8 @@ const pool = new Pool(
       console.log(result.rows);
   }
   });
+
+  init();
 
   app.use((req, res) => {
     res.status(404).end();

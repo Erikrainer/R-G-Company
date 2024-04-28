@@ -10,5 +10,5 @@ const promptUser = () => {
         }
     ]);
 };
-promptUser();
+
 module.exports = promptUser;
