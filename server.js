@@ -2,6 +2,12 @@ const express = require('express');
 
 const promptUser = require("./logics/promptuser");
 
+const roleInput = require("./logics/role");
+
+const departmentInput = require("./logics/department");
+
+const employeeInput = require("./logics/employee");
+
 require('dotenv').config();
 
 const { Pool } = require('pg');
