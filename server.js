@@ -12,6 +12,8 @@ const objectsToTable = require("./logics/table");
 
 const updateEmployee = require("./logics/updateemployee");
 
+const managerUpdate = require("./logics/managerupdate");
+
 const pool = require("./logics/pool");
 
 const PORT = process.env.PORT || 3001;
@@ -25,8 +27,7 @@ app.use(express.json());
     const userInitInput = await promptUser();
 
     // bellow user choices
-    // "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"
-    // SELECT r.role_id AS id, r.title AS title, r.salary, d.name AS department FROM role AS r JOIN department AS d ON r.department_id = d.department_id;
+    // "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees","Update Employee Manager", "Quit"
     if(userInitInput.landing === 'View All Employees'){
       pool.query(
         "SELECT  e.employee_id AS ID, e.first_name, e.last_name, r.title AS Title, d.name AS department, r.salary AS Salary, CASE  WHEN e.manager_id IS NOT NULL THEN CONCAT(m.first_name, ' ', m.last_name) ELSE NULL END AS Manager FROM employee AS e JOIN role AS r ON e.role_id = r.role_id JOIN department AS d ON r.department_id = d.department_id LEFT JOIN employee AS m ON e.manager_id = m.employee_id;", 
@@ -132,6 +133,23 @@ app.use(express.json());
           console.log('Department added successfully!');
           init();
         }});
+
+    }else if(userInitInput.landing === "Update Employee Manager"){
+      const userManagerUpdate = await managerUpdate(); // Get user input
+      const { newEmployeeSelection, newManagerSelection } = userManagerUpdate;
+
+      const manageUpdateQuery = {
+        text: 'UPDATE employee set manager_id = ($1) WHERE employee_id = ($2)',
+        values: [newManagerSelection, newEmployeeSelection]
+      }
+      pool.query(manageUpdateQuery , (error, result) => {
+        if(error){
+          console.error("Error executing query", error);
+        }else {
+          console.log("Employee Manager Updated successfully!");
+          init();
+        }
+      });
 
     }else{
       console.log("Thanks for using the RandGCompany system!!!");
