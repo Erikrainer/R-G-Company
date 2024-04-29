@@ -24,8 +24,11 @@ app.use(express.json());
 
     // bellow user choices
     // "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"
+    // SELECT r.role_id AS id, r.title AS title, r.salary, d.name AS department FROM role AS r JOIN department AS d ON r.department_id = d.department_id;
     if(userInitInput.landing === 'View All Employees'){
-      pool.query('SELECT * FROM employee', (err, result) => {
+      pool.query(
+        "SELECT  e.employee_id AS ID, e.first_name, e.last_name, r.title AS Title, d.name AS department, r.salary AS Salary, CASE  WHEN e.manager_id IS NOT NULL THEN CONCAT(m.first_name, ' ', m.last_name) ELSE NULL END AS Manager FROM employee AS e JOIN role AS r ON e.role_id = r.role_id JOIN department AS d ON r.department_id = d.department_id LEFT JOIN employee AS m ON e.manager_id = m.employee_id;", 
+      (err, result) => {
         if (err) {
           console.error('Error executing query', err);
       } else {
@@ -58,7 +61,9 @@ app.use(express.json());
       console.log("Update Employee Role");
 
     }else if(userInitInput.landing === "View All Roles"){
-      pool.query('SELECT * FROM role', (err, result) => {
+      pool.query(
+        'SELECT r.role_id AS id, r.title AS title, r.salary, d.name AS department FROM role AS r JOIN department AS d ON r.department_id = d.department_id;', 
+        (err, result) => {
         if (err) {
           console.error('Error executing query', err);
         } else {
