@@ -70,7 +70,20 @@ app.use(express.json());
       });
 
     }else if(userInitInput.landing === "Add Role"){
-      console.log("Add Role");
+      const userRoleInput = await roleInput();
+      const { newRole, newSalary, newRoleDepartment } = userRoleInput;
+      const query = {
+        text: 'INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)',
+        values: [newRole, newSalary, newRoleDepartment]
+      };
+    
+      pool.query(query, (err, result) => {
+        if (err) {
+          console.error('Error executing query', err);
+        } else {
+          console.log('Role added successfully!');
+          init();
+        }});
 
     }else if(userInitInput.landing === "View All Departments"){
       pool.query('SELECT * FROM department', (err, result) => {
