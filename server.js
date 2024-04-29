@@ -10,6 +10,8 @@ const employeeInput = require("./logics/employee");
 
 const objectsToTable = require("./logics/table");
 
+const updateEmployee = require("./logics/updateemployee");
+
 const pool = require("./logics/pool");
 
 const PORT = process.env.PORT || 3001;
@@ -43,7 +45,6 @@ app.use(express.json());
       const userEmployeeInput = await employeeInput(); // Get user input
       const { firstNameNewEmployee, lastNameNewEmployee, newEmployeeRoleId, newEmployeeManagerId } = userEmployeeInput;
       
-      // Use parameterized query to avoid SQL injection
       const query = {
         text: 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)',
         values: [firstNameNewEmployee, lastNameNewEmployee, newEmployeeRoleId, newEmployeeManagerId]
@@ -58,7 +59,22 @@ app.use(express.json());
         }
       })
     }else if(userInitInput.landing === "Update Employee Role"){
-      console.log("Update Employee Role");
+      const userUpdateEmployee = await updateEmployee(); // Get user input
+      const { newEmployeeSelection, newRoleSelection } = userUpdateEmployee;
+
+      const updateQuery = {
+        text: 'UPDATE employee set role_id = ($1) WHERE employee_id = ($2)',
+        values: [newRoleSelection, newEmployeeSelection]
+      };
+
+      pool.query(updateQuery, (err, result) => {
+        if (err) {
+          console.error('Error executing query', err);
+        } else {
+          console.log('Employee updated successfully!');
+          init();
+        }
+      })
 
     }else if(userInitInput.landing === "View All Roles"){
       pool.query(
@@ -75,7 +91,7 @@ app.use(express.json());
       });
 
     }else if(userInitInput.landing === "Add Role"){
-      const userRoleInput = await roleInput();
+      const userRoleInput = await roleInput(); // Get user input
       const { newRole, newSalary, newRoleDepartment } = userRoleInput;
       const query = {
         text: 'INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)',
@@ -91,7 +107,7 @@ app.use(express.json());
         }});
 
     }else if(userInitInput.landing === "View All Departments"){
-      pool.query('SELECT * FROM department', (err, result) => {
+      pool.query('SELECT department_id AS id, name as Department FROM department', (err, result) => {
         if (err) {
           console.error('Error executing query', err);
         } else {
@@ -102,7 +118,7 @@ app.use(express.json());
       });
 
     }else if(userInitInput.landing === "Add Department"){
-      const userDepartmentInput = await departmentInput();
+      const userDepartmentInput = await departmentInput(); // Get user input
       const {newDepartment} = userDepartmentInput;
       const query = {
         text: 'INSERT INTO department (name) VALUES ($1)',
@@ -116,9 +132,6 @@ app.use(express.json());
           console.log('Department added successfully!');
           init();
         }});
-
-    }else if(userInitInput.landing === "View All Employees"){
-      console.log("View All Employees");
 
     }else{
       console.log("Thanks for using the RandGCompany system!!!");
