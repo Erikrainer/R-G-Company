@@ -37,8 +37,8 @@ app.use(express.json());
       });
 
     }else if (userInitInput.landing === "Add Employee") {
-      const userInput = await employeeInput(); // Get user input
-      const { firstNameNewEmployee, lastNameNewEmployee, newEmployeeRoleId, newEmployeeManagerId } = userInput;
+      const userEmployeeInput = await employeeInput(); // Get user input
+      const { firstNameNewEmployee, lastNameNewEmployee, newEmployeeRoleId, newEmployeeManagerId } = userEmployeeInput;
       
       // Use parameterized query to avoid SQL injection
       const query = {
@@ -51,8 +51,6 @@ app.use(express.json());
           console.error('Error executing query', err);
         } else {
           console.log('Employee added successfully!');
-          // After adding the employee, you may want to display the updated employee list or perform other actions
-          // You can call the `init()` function here or any other function to continue the flow
           init();
         }
       })
@@ -86,7 +84,20 @@ app.use(express.json());
       });
 
     }else if(userInitInput.landing === "Add Department"){
-      console.log("Add Department");
+      const userDepartmentInput = await departmentInput();
+      const {newDepartment} = userDepartmentInput;
+      const query = {
+        text: 'INSERT INTO department (name) VALUES ($1)',
+        values: [newDepartment]
+      };
+    
+      pool.query(query, (err, result) => {
+        if (err) {
+          console.error('Error executing query', err);
+        } else {
+          console.log('Department added successfully!');
+          init();
+        }});
 
     }else if(userInitInput.landing === "View All Employees"){
       console.log("View All Employees");
