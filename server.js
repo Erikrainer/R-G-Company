@@ -36,20 +36,26 @@ app.use(express.json());
       };
       });
 
-    }else if(userInitInput.landing === "Add Employee"){
+    }else if (userInitInput.landing === "Add Employee") {
       const userInput = await employeeInput(); // Get user input
-      const { firstNameNewEmployee, lastNameNewEmployee, newEmployeeRole, newEmployeeManager } = userInput;
-      pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
-      VALUES(${firstNameNewEmployee}, ${lastNameNewEmployee}, ${newEmployeeRole}, ${newEmployeeManager})`, (err, result) => {
+      const { firstNameNewEmployee, lastNameNewEmployee, newEmployeeRoleId, newEmployeeManagerId } = userInput;
+      
+      // Use parameterized query to avoid SQL injection
+      const query = {
+        text: 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)',
+        values: [firstNameNewEmployee, lastNameNewEmployee, newEmployeeRoleId, newEmployeeManagerId]
+      };
+    
+      pool.query(query, (err, result) => {
         if (err) {
           console.error('Error executing query', err);
         } else {
-           const departmentTable = objectsToTable(result.rows);
-            console.log(departmentTable);
-            init();
-        };
-      });
-
+          console.log('Employee added successfully!');
+          // After adding the employee, you may want to display the updated employee list or perform other actions
+          // You can call the `init()` function here or any other function to continue the flow
+          init();
+        }
+      })
     }else if(userInitInput.landing === "Update Employee Role"){
       console.log("Update Employee Role");
 

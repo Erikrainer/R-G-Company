@@ -1,32 +1,35 @@
 const inquirer = require("inquirer");
+
 const pool = require("./pool");
 
 // EMPLOYEE INPUT 
 const employeeInput = () => {
   return new Promise((resolve, reject) => {
-    // Query to retrieve the list of roles from the database
     pool.query('SELECT role_id, title FROM role;', (err, roleResult) => {
       if (err) {
-        console.error('Error executing query', err);
+        console.error('Error executing role query', err);
         reject(err);
         return;
       }
 
-      // Extract role titles from the query result
-      const roles = roleResult.rows.map(row => ({
-        name: row.title,
-        value: row.role_id
-      }));
+      const roles = roleResult.rows.reduce((acc, row) => {
+        // Map role title to ID
+        acc[row.title] = row.role_id;
+        return acc;
+      }, {});
 
-      // Query to retrieve the list of manager names from the database
-      pool.query('SELECT first_name || \' \' || last_name AS full_name FROM employee;', (err, managerResult) => {
+      pool.query('SELECT employee_id, first_name || \' \' || last_name AS full_name FROM employee;', (err, managerResult) => {
         if (err) {
-          console.error('Error executing query', err);
+          console.error('Error executing manager query', err);
           reject(err);
           return;
         }
 
-        const managerNames = managerResult.rows.map(row => row.full_name);
+        const managers = managerResult.rows.reduce((acc, row) => {
+          // Map manager name to ID
+          acc[row.full_name] = row.employee_id;
+          return acc;
+        }, {});
 
         inquirer.prompt([
           {
@@ -43,20 +46,24 @@ const employeeInput = () => {
             type: "list",
             name: "newEmployeeRole",
             message: "What is the employee's role?",
-            choices: roles
+            choices: Object.keys(roles) // Use role titles as choices
           },
           {
             type: "list",
             name: "newEmployeeManager",
             message: "Who is the employee's manager?",
-            choices: managerNames
+            choices: Object.keys(managers) // Use manager names as choices
           },
         ]).then(answers => {
+          // Map selected role and manager name to IDs before resolving
+          answers.newEmployeeRoleId = roles[answers.newEmployeeRole];
+          answers.newEmployeeManagerId = managers[answers.newEmployeeManager];
           resolve(answers);
         }).catch(reject);
       });
     });
   });
 };
+
 
 module.exports = employeeInput;

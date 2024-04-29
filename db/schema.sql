@@ -19,15 +19,13 @@ department_id INTEGER NOT NULL,
 );
 
 CREATE TABLE employee (
-employee_id SERIAL PRIMARY KEY,
-first_name VARCHAR(30) NOT NULL,
-last_name VARCHAR(30) NOT NULL,
-role_id INTEGER NOT NULL,
-manager_id INTEGER,
-  FOREIGN KEY (role_id)
-  REFERENCES role(role_id),
-  FOREIGN KEY (manager_id)
-  REFERENCES role(role_id)
+  employee_id SERIAL PRIMARY KEY,
+  first_name VARCHAR(30) NOT NULL,
+  last_name VARCHAR(30) NOT NULL,
+  role_id INTEGER NOT NULL,
+  manager_id INTEGER,
+  FOREIGN KEY (role_id) REFERENCES role(role_id),
+  FOREIGN KEY (manager_id) REFERENCES employee(employee_id)
 );
 
 -- MANAGER POSITIONS UNTIL NOW 
