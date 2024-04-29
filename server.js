@@ -10,27 +10,13 @@ const employeeInput = require("./logics/employee");
 
 const objectsToTable = require("./logics/table");
 
-require('dotenv').config();
-
-const { Pool } = require('pg');
+const pool = require("./logics/pool");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
- 
-const pool = new Pool(
-    {
-    user: process.env.USER,
-    password: process.env.PASSWORD,    
-    host: process.env.HOST,
-    database: process.env.DATABASE,  
-    },
-    console.log(`Connected to the randg_db database.`)
-  )
-
-  pool.connect();
 
   async function init() {
 
@@ -43,6 +29,7 @@ const pool = new Pool(
         if (err) {
           console.error('Error executing query', err);
       } else {
+        console.log(result.rows);
           const employeeTable = objectsToTable(result.rows);
           console.log(employeeTable);
           init();
@@ -50,7 +37,18 @@ const pool = new Pool(
       });
 
     }else if(userInitInput.landing === "Add Employee"){
-      console.log("Add Employee");
+      const userInput = await employeeInput(); // Get user input
+      const { firstNameNewEmployee, lastNameNewEmployee, newEmployeeRole, newEmployeeManager } = userInput;
+      pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+      VALUES(${firstNameNewEmployee}, ${lastNameNewEmployee}, ${newEmployeeRole}, ${newEmployeeManager})`, (err, result) => {
+        if (err) {
+          console.error('Error executing query', err);
+        } else {
+           const departmentTable = objectsToTable(result.rows);
+            console.log(departmentTable);
+            init();
+        };
+      });
 
     }else if(userInitInput.landing === "Update Employee Role"){
       console.log("Update Employee Role");
