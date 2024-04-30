@@ -39,7 +39,6 @@ app.use(express.json());
         if (err) {
           console.error('Error executing query', err);
       } else {
-        console.log(result.rows);
           const employeeTable = objectsToTable(result.rows);
           console.log(employeeTable);
           init();
@@ -88,7 +87,6 @@ app.use(express.json());
         if (err) {
           console.error('Error executing query', err);
         } else {
-            console.log(result.rows)
             const roleTable = objectsToTable(result.rows);
             console.log(roleTable);
             init();
