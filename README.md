@@ -36,6 +36,11 @@ npm install
 \i seeds.sql
 
 ```
+   
+![Screenshot 2024-04-29 185747](https://github.com/Erikrainer/RandGCompany/assets/160955635/147253d2-c0ee-4a0c-a58c-5523fc092883)
+
+![Screenshot 2024-04-29 185719](https://github.com/Erikrainer/RandGCompany/assets/160955635/232561f6-bdbd-468d-a732-b10b1b4ae7a4)
+
 ## Usage 🏆
 
 1. Start with the installation in the root folder
@@ -43,6 +48,12 @@ npm install
 3. node server.js
 4. You going to select in the prompt what do you want
 5. View All Employees, Add Employee, Update Employee Role, View All Roles, Add Role, View All Departments, Add Department, View All Employees, Update Employee Manager, View employee by Manager, View employee by Department, Quit
+
+![Screenshot 2024-04-29 192026](https://github.com/Erikrainer/RandGCompany/assets/160955635/6206f7fb-f7f1-443d-9a01-ec651ee6c7a7)
+
+![Screenshot 2024-04-29 192038](https://github.com/Erikrainer/RandGCompany/assets/160955635/3c4ad8c3-1579-4959-a6ce-b48c5f731604)
+
+![Screenshot 2024-04-29 192048](https://github.com/Erikrainer/RandGCompany/assets/160955635/631e6afc-ff04-49c0-beca-566198c9d5da)
 
 ## License 📛 
 
