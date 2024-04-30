@@ -6,6 +6,10 @@
 
 RandGCompany employee system that can be used to view update and add information(DELETE and more comming soon), the user can do a lot of funny stuff with this new application, all that using the database system and the express.js.
 
+ER Diagram:
+![image](https://github.com/Erikrainer/RandGCompany/assets/160955635/0abff89d-bcee-4349-af67-72531b79dc2e)
+
+
 ## Table of Contents 🗒
 
 * [Installations](#installations-💻)
