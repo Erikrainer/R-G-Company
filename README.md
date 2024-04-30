@@ -26,18 +26,23 @@ Deployed link: TBD
 
 To install dependencies, run these commands:
 
+```
 npm install
+```
+```
+\i schema.sql
+```
+```
+\i seeds.sql
 
+```
 ## Usage 🏆
 
-1. Start with the database(db) folder
-2. \i schema.sql
-3. \i seeds.sql
-4. Now lets start with the installation in the root folder
-5. npm install
-6. node server.js
-7. You going to select in the prompt what do you want
-8. View All Employees, Add Employee, Update Employee Role, View All Roles, Add Role, View All Departments, Add Department, View All Employees, Update Employee Manager, View employee by Manager, View employee by Department, Quit
+1. Start with the installation in the root folder
+2. npm install
+3. node server.js
+4. You going to select in the prompt what do you want
+5. View All Employees, Add Employee, Update Employee Role, View All Roles, Add Role, View All Departments, Add Department, View All Employees, Update Employee Manager, View employee by Manager, View employee by Department, Quit
 
 ## License 📛 
 
