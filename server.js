@@ -14,6 +14,10 @@ const updateEmployee = require("./logics/updateemployee");
 
 const managerUpdate = require("./logics/managerupdate");
 
+const viewByManager = require("./logics/viewbymanager");
+
+const viewByDepartment = require("./logics/viewbydepartment");
+
 const pool = require("./logics/pool");
 
 const PORT = process.env.PORT || 3001;
@@ -27,7 +31,7 @@ app.use(express.json());
     const userInitInput = await promptUser();
 
     // bellow user choices
-    // "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees","Update Employee Manager", "Quit"
+    // "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees","Update Employee Manager","View employee by Manager","View employee by Department", "Quit"
     if(userInitInput.landing === 'View All Employees'){
       pool.query(
         "SELECT  e.employee_id AS ID, e.first_name, e.last_name, r.title AS Title, d.name AS department, r.salary AS Salary, CASE  WHEN e.manager_id IS NOT NULL THEN CONCAT(m.first_name, ' ', m.last_name) ELSE NULL END AS Manager FROM employee AS e JOIN role AS r ON e.role_id = r.role_id JOIN department AS d ON r.department_id = d.department_id LEFT JOIN employee AS m ON e.manager_id = m.employee_id;", 
@@ -151,6 +155,51 @@ app.use(express.json());
         }
       });
 
+    }else if(userInitInput.landing === "View employee by Manager"){
+     const managerView = await viewByManager();
+     const { newmanagerView } = managerView;
+      const viewByManagerMessage = {
+        text:'SELECT employee_id AS employee_id, first_name || \' \' || last_name AS Employee_Name FROM employee WHERE manager_id = ($1);',
+        values:[newmanagerView]
+      }
+
+    pool.query(viewByManagerMessage , (error, result) => {
+      if(error){
+        console.error("Error executing query", error);
+      }else {
+        if(result.rows.length === 0){
+          console.log("No employees assigned for this manager yet!!");
+          init();
+        }else {
+          const managerMessage = objectsToTable(result.rows);
+          console.log(managerMessage);
+          init();
+        }
+      }
+    });
+
+    }else if(userInitInput.landing === "View employee by Department"){
+      const employeeDepartmentView = await viewByDepartment();
+      const {newDepartmentView} = employeeDepartmentView;
+      const viewByDepartmentMessage = {
+        text: "SELECT e.employee_id, e.first_name || \' \' || e.last_name AS Employee_Name FROM employee e JOIN role r ON e.role_id = r.role_id JOIN department d ON r.department_id = d.department_id WHERE d.department_id = ($1);",
+        values:[newDepartmentView]
+      }
+      pool.query(viewByDepartmentMessage , (error, result) => {
+        if(error){
+          console.error("Error executing query", error);
+        }else {
+          if(result.rows.length === 0){
+            console.log("No employees assigned for this department yet!!");
+            init();
+          }else {
+            const departmentMessage = objectsToTable(result.rows);
+            console.log(departmentMessage);
+            init();
+          }
+        }
+      });
+    
     }else{
       console.log("Thanks for using the RandGCompany system!!!");
       process.exit();
