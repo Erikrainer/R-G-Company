@@ -37,7 +37,7 @@ npm install
 5. npm install
 6. node server.js
 7. You going to select in the prompt what do you want
-8. "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees","Update Employee Manager","View employee by Manager","View employee by Department", "Quit"
+8. View All Employees, Add Employee, Update Employee Role, View All Roles, Add Role, View All Departments, Add Department, View All Employees, Update Employee Manager, View employee by Manager, View employee by Department, Quit
 
 ## License 📛 
 
