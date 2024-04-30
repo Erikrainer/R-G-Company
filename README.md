@@ -22,7 +22,7 @@ RandGCompany employee system that can be used to view update and add information
 
 ## Installations  💻
 
-Deployed link: TBD 
+Walkthrough video: https://youtu.be/Gg5YwsrZfmY 
 
 To install dependencies, run these commands:
 
