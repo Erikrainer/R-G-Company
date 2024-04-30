@@ -4,7 +4,7 @@
 
 ## Description 📝
 
-I`m going to create an employee tracker using database and express to track and show data from the employees
+RandGCompany employee system that can be used to view update and add information(DELETE and more comming soon), the user can do a lot of funny stuff with this new application, all that using the database system and the express.js.
 
 ## Table of Contents 🗒
 
@@ -30,7 +30,14 @@ npm install
 
 ## Usage 🏆
 
-TBD
+1. Start with the database(db) folder
+2. \i schema.sql
+3. \i seeds.sql
+4. Now lets start with the installation in the root folder
+5. npm install
+6. node server.js
+7. You going to select in the prompt what do you want
+8. "View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees","Update Employee Manager","View employee by Manager","View employee by Department", "Quit"
 
 ## License 📛 
 
